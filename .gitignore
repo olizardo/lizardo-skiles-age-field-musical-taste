@@ -10,3 +10,8 @@ original-stata/
 .RData
 *.DS_Store
 AGENTS.md
+
+# renv: lockfile is committed; library and cache stay local
+renv/library/
+renv/cache/
+renv/local/
