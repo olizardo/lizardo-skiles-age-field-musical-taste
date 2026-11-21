@@ -26,6 +26,21 @@ taste_names <- c(
 )
 taste12 <- setdiff(taste_names, c("bwayst", "blurb", "reggae"))
 
+style_labels <- c(
+  classical = "Classical", opera = "Opera", jazz = "Jazz", bwayst = "Showtunes",
+  moodez = "Easy", country = "Country", blueg = "Bluegrass", folk = "Folk",
+  hymgos = "Religious", latspsal = "Latin", raphiphop = "Rap", blurb = "Blues",
+  reggae = "Reggae", controck = "Cont. Rock", hvymtl = "Heavy Metal"
+)
+
+# 4 significant digits: 4 decimal places would zero out the tiny Table 1
+# p-values (some are on the order of 1e-21)
+prettify <- function(tab) {
+  tab |>
+    mutate(genre = unname(style_labels[genre]),
+           across(where(is.numeric), ~ signif(.x, 4)))
+}
+
 lrtest <- function(m1, m2) {
   chisq <- 2 * (logLik(m2) - logLik(m1))[1]
   df <- attr(logLik(m2), "df") - attr(logLik(m1), "df")
@@ -72,8 +87,8 @@ tab3 <- map_dfr(seq_along(taste12), function(i) {
 })
 
 fs::dir_create("output/tables")
-write.csv(tab1, "output/tables/table1-lrtest-year.csv", row.names = FALSE)
-write.csv(tab2, "output/tables/table2-lrtest-year-age.csv", row.names = FALSE)
-write.csv(tab3, "output/tables/table3-lrtest-year-age-degree.csv", row.names = FALSE)
+write.csv(prettify(tab1), "output/tables/table1-lrtest-year.csv", row.names = FALSE)
+write.csv(prettify(tab2), "output/tables/table2-lrtest-year-age.csv", row.names = FALSE)
+write.csv(prettify(tab3), "output/tables/table3-lrtest-year-age-degree.csv", row.names = FALSE)
 cat("LR tests written to output/tables/\n")
-print(tab1); print(tab2); print(tab3)
+print(prettify(tab1)); print(prettify(tab2)); print(prettify(tab3))
