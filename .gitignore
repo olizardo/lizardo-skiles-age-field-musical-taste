@@ -1,0 +1,12 @@
+# data (fetched by R/01-download-data.R and built by the pipeline)
+data-raw/
+data/
+
+# original Stata files and shipped figures: provenance, kept locally only
+original-stata/
+
+# editor cruft
+.Rhistory
+.RData
+*.DS_Store
+AGENTS.md
